@@ -1,0 +1,4 @@
+:HL["/_next/static/media/4fca260083159167-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/media/f3fb4235d30510d6-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/css/155deded0064f66b.css","style"]
+0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"san-pham","param":null,"prefetchHints":4192,"slots":{"children":{"name":"slug","param":{"type":"d","key":"thuong-dinh","siblings":[]},"prefetchHints":4192,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}}}},"staleTime":300,"buildId":"CRXo6jTes8yIpfMDBoiVN"}
