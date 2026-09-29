@@ -1,26 +1,118 @@
 @import "tailwindcss";
 
+/* Tokens extracted from dvo.it main.css — light mode only */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #eeeeeb;
+  --surface: #fafaf8;
+  --ink: #1b1a14;
+  --line: #bdbfbd;
+  --line-soft: #e0e0de;
+  --muted: #666664;
+  --sage: #667774;
+
+  /* dvo's CSS linear() expo-out curve */
+  --ease-dvo: linear(0, .2688 9.91%, .3859 15%, .4917 20.19%, .5865 25.5%, .6705 30.93%, .7441 36.51%, .8075 42.26%, .8593 47.98%, .9022 53.93%, .9366 60.13%, .963 66.67%, .9812 73.4%, .9929 80.76%, .9986 88.89%, 1);
+
+  --topbar-h: 30px;
+  --nav-h: 76px;
+  --gutter: 16px;
+}
+@media (min-width: 1024px) {
+  :root { --gutter: 30px; }
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-line: var(--line);
+  --color-line-soft: var(--line-soft);
+  --color-muted: var(--muted);
+  --color-sage: var(--sage);
+  --font-sans: var(--font-geologica), system-ui, sans-serif;
+  --ease-dvo: var(--ease-dvo);
+  --spacing-g: var(--gutter);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+html { background: var(--bg); color-scheme: light; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: var(--ink); color: var(--surface); }
+
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: clip; }
+
+@layer components {
+  /* Type scale (dvo: 120/200, 30/200, 15.75/300, 13 uppercase 500) */
+  .t-display { font-weight: 200; font-size: clamp(52px, 8.33vw, 120px); line-height: 1; letter-spacing: -0.01em; }
+  .t-h1 { font-weight: 200; font-size: clamp(40px, 5vw, 72px); line-height: 1.05; letter-spacing: -0.01em; }
+  .t-h2 { font-weight: 200; font-size: clamp(26px, 2.1vw, 30px); line-height: 1.15; letter-spacing: -0.01em; }
+  .t-lead { font-weight: 300; font-size: clamp(18px, 1.5vw, 22px); line-height: 1.3; }
+  .t-body { font-weight: 300; font-size: 15.75px; line-height: 1.45; }
+  .t-label { font-weight: 500; font-size: 12px; line-height: 1.2; letter-spacing: 0.02em; text-transform: uppercase; }
+  .t-menu { font-weight: 300; font-size: clamp(30px, 2.4vw, 36px); line-height: 1.12; }
+
+  /* ■ LABEL link with underline (dvo "SCOPRI") */
+  .btn-link {
+    position: relative; display: inline-flex; align-items: center; gap: 8px;
+    padding-bottom: 6px; font-weight: 500; font-size: 12px; letter-spacing: 0.02em; text-transform: uppercase;
+  }
+  .btn-link::before { content: ""; width: 8px; height: 8px; background: var(--line); transition: background-color .4s var(--ease-dvo); }
+  .btn-link::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: currentColor; opacity: .3;
+    transform-origin: left; transition: transform .6s var(--ease-dvo), opacity .4s var(--ease-dvo);
+  }
+  .btn-link:hover::before { background: currentColor; }
+  .btn-link:hover::after { opacity: 1; animation: underline .8s var(--ease-dvo); }
+
+  /* Bordered / ink buttons, 5px radius */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    height: 34px; padding: 0 14px; border-radius: 5px; border: 1px solid currentColor;
+    font-weight: 500; font-size: 12px; letter-spacing: 0.02em; text-transform: uppercase; white-space: nowrap;
+    transition: background-color .4s var(--ease-dvo), color .4s var(--ease-dvo), border-color .4s var(--ease-dvo);
+  }
+  .btn:hover { background: var(--ink); color: var(--surface); border-color: var(--ink); }
+  .btn-ink { background: var(--ink); color: var(--surface); border-color: var(--ink); }
+  .btn-ink:hover { background: transparent; color: var(--ink); }
+  .btn-light { color: var(--surface); }
+  .btn-light:hover { background: var(--surface); color: var(--ink); border-color: var(--surface); }
+
+  /* Square arrow button (slider controls) */
+  .btn-square {
+    display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px;
+    border: 1px solid currentColor; border-radius: 5px; transition: background-color .4s var(--ease-dvo), color .4s var(--ease-dvo);
+  }
+  .btn-square:hover { background: var(--ink); color: var(--surface); border-color: var(--ink); }
+  .btn-square-light:hover { background: var(--surface); color: var(--ink); border-color: var(--surface); }
+
+  /* Form fields */
+  .field {
+    width: 100%; background: transparent; border: 0; border-bottom: 1px solid var(--line);
+    padding: 12px 0; font-size: 16px; font-weight: 300; color: var(--ink); outline: none; border-radius: 0;
+    transition: border-color .4s var(--ease-dvo);
+  }
+  .field::placeholder { color: var(--muted); opacity: .7; }
+  .field:focus { border-color: var(--ink); }
+  select.field { appearance: none; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%231b1a14' stroke-width='1.2'%3E%3Cpath d='m2 4 4 4 4-4'/%3E%3C/svg%3E") no-repeat right 2px center; }
+
+  /* Vertical grid lines drawn by --progress (dvo .lines) */
+  .grid-lines { --progress: 1; position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+  .grid-lines > i {
+    position: absolute; top: 0; height: 100%; width: 1px; background: var(--line);
+    transform: translateX(-50%) scaleY(var(--progress)); transform-origin: center top;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@keyframes underline { 0% { transform: scaleX(1); transform-origin: right; } 49% { transform: scaleX(0); transform-origin: right; } 50% { transform-origin: left; } 100% { transform: scaleX(1); transform-origin: left; } }
+@keyframes progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
